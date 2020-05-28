@@ -1,8 +1,11 @@
 require('dotenv').config({ path: process.cwd() + '/config/.env' });
 
-require('./consumers/consumer');
+
 
 const db = require('./config/db.config');
+
+require('./consumers/summary_consumer');
+require('./consumers/game_consumer');
 
 
 db.sequelize

@@ -1,6 +1,6 @@
 const kafka = require('kafka-node');
 const config = require('../config/config');
-const betSummary = require('../schedulers/bet_summary');
+const EndGame = require('../schedulers/endgame_computation');
 
 try {
 
@@ -9,7 +9,7 @@ try {
   const client = new kafka.KafkaClient({kafkaHost: config.kafka_server});
   let consumer = new Consumer(
     client,
-    [{ topic: config.kafka_topic, partition: 0 }],
+    [{ topic: config.kafka_topic_endgame, partition: 0 }],
     {
       autoCommit: true,
       fetchMaxWaitMs: 1000,
@@ -18,7 +18,8 @@ try {
       fromOffset: false
     }
   );
-  consumer.on('message', betSummary.summariseBets);
+  console.log("End game initialized");
+  consumer.on('message', EndGame.endGameComputation);
   consumer.on('error', function(err) {
     console.log('error', err);
   });
